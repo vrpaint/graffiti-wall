@@ -6,3 +6,10 @@ body{
 .Root{
     text-align: center;
 }
+
+.Tools{
+    z-index: 20;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}

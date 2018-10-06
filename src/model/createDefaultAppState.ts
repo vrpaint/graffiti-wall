@@ -2,6 +2,9 @@ import { IAppState } from './IAppState';
 
 export function createDefaultAppState(): IAppState {
     return {
-        message: 'Hello World!',
+        name: 'Drawing 1',
+        corners: null,
+        calibrationProgress: [],
+        drawings: [],
     };
 }

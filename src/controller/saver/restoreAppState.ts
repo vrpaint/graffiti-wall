@@ -13,6 +13,8 @@ export function restoreAppState(): IAppState & IObservableObject {
             );
         }
         appState = JSON.parse(appModelSerialized);
+
+        //todo here check appState and its version and use migrations.
     } catch (error) {
         console.warn(
             `Error while trying to deserialize saved state - creating new state.`,

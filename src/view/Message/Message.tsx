@@ -11,9 +11,9 @@ interface IMessageProps {
 export const Message = observer(({ appState }: IMessageProps) => {
     return (
         <div className="Message">
-            <textarea
-                defaultValue={appState.message}
-                onChange={(event) => (appState.message = event.target.value)}
+            <input
+                defaultValue={appState.name}
+                onChange={(event) => (appState.name = event.target.value)}
             />
         </div>
     );
