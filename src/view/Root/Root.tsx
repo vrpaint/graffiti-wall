@@ -85,23 +85,23 @@ export const Root = observer(
                 <Wall {...{ appState, situationState, wallRenderer }} />
 
                 <div className="Tools">
-                {appState.corners ? (
-                    <button
-                        onClick={() => {
-                            appState.corners = null;
-                            //appState.calibrationProgress = [];
-                        }}
-                    >
-                        ReCalibrate
-                    </button>
-                ) : (
-                    <div>
-                        Calibrating {appState.calibrationProgress.length + 1}.
-                        corner.
-                    </div>
-                )}
+                    {appState.corners ? (
+                        <button
+                            onClick={() => {
+                                appState.corners = null;
+                                //appState.calibrationProgress = [];
+                            }}
+                        >
+                            ReCalibrate
+                        </button>
+                    ) : (
+                        <div>
+                            Calibrating{' '}
+                            {appState.calibrationProgress.length + 1}. corner.
+                        </div>
+                    )}
 
-                {/*
+                    {/*
                 <div>
                     Wall contains {appState.drawings.length} drawings.
                     <button

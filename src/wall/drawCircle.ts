@@ -8,7 +8,7 @@ export function drawCircle(
     color: string,
     //todo maybe border options
 ) {
-    if(size<1)return;
+    if (size < 1) return;
     ctx.beginPath();
     ctx.arc(position.x, position.y, size, 0, Math.PI * 2);
     ctx.fillStyle = color;
@@ -25,7 +25,7 @@ export function drawCircleStroke(
     lineWidth: number,
     color: string,
 ) {
-    if(size<1)return;
+    if (size < 1) return;
     ctx.beginPath();
     ctx.arc(position.x, position.y, size, 0, Math.PI * 2);
     ctx.strokeStyle = color;
@@ -39,6 +39,15 @@ export function drawCircleHighlighted(
     size: number,
     color: string,
 ) {
-    drawCircleStroke(ctx,position,size,6,Color(color).negate().hex().toString());
-    drawCircleStroke(ctx,position,size,4,color);
+    drawCircleStroke(
+        ctx,
+        position,
+        size,
+        6,
+        Color(color)
+            .negate()
+            .hex()
+            .toString(),
+    );
+    drawCircleStroke(ctx, position, size, 4, color);
 }

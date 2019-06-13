@@ -16,30 +16,35 @@ interface IWallProps {
 
 //todo hide when appState.corners calibration in process
 
-export const Wall = observer(({ appState, situationState,wallRenderer }: IWallProps) => {
-    console.log(`@Rendering Wall (this should occur only once)(!!! test and remove).`);//todo test and remove
-    return (
-        <div className="Wall">
-            {situationState.world && situationState.world.wallMesh ? (
-                <canvas
-                    ref={(canvasElement) => {
-                        if (canvasElement) {
-                            //console.log('Canvas element for wall:', canvasElement);
+export const Wall = observer(
+    ({ appState, situationState, wallRenderer }: IWallProps) => {
+        console.log(
+            `@Rendering Wall (this should occur only once)(!!! test and remove).`,
+        ); //todo test and remove
+        return (
+            <div className="Wall">
+                {situationState.world && situationState.world.wallMesh ? (
+                    <canvas
+                        ref={(canvasElement) => {
+                            if (canvasElement) {
+                                //console.log('Canvas element for wall:', canvasElement);
 
+                                //(window.innerWidth,window.innerHeight));//todo do sizes better
+                                canvasElement.width = window.innerWidth; //canvasElement.getBoundingClientRect().width;
+                                canvasElement.height = window.innerHeight; //canvasElement.getBoundingClientRect().height;
 
-                            //(window.innerWidth,window.innerHeight));//todo do sizes better
-                            canvasElement.width = window.innerWidth;//canvasElement.getBoundingClientRect().width;
-                            canvasElement.height = window.innerHeight;//canvasElement.getBoundingClientRect().height;
+                                const ctx = canvasElement.getContext('2d')!;
+                                wallRenderer.addContext(ctx);
+                                //todo add wallRendererEnhancer
+                                wallRenderer.subscribe(() => {
+                                    drawOnWallSituationStateControllers(
+                                        ctx,
+                                        situationState.controllers,
+                                    );
+                                });
 
-                            const ctx = canvasElement.getContext('2d')!;
-                            wallRenderer.addContext(ctx);
-                            //todo add wallRendererEnhancer
-                            wallRenderer.subscribe(()=>{
-                                drawOnWallSituationStateControllers(ctx,situationState.controllers);
-                            })
-
-                            TC;
-                            /*
+                                TC;
+                                /*
                         ctx.lineWidth = 10;
                         ctx.lineCap = 'round';
 
@@ -69,12 +74,13 @@ export const Wall = observer(({ appState, situationState,wallRenderer }: IWallPr
                             });
                         });
                         */
-                        }
-                    }}
-                />
-            ) : (
-                <div>Pending</div>
-            )}
-        </div>
-    );
-});
+                            }
+                        }}
+                    />
+                ) : (
+                    <div>Pending</div>
+                )}
+            </div>
+        );
+    },
+);

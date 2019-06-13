@@ -33,7 +33,7 @@ export default class World {
         public canvasElement: HTMLCanvasElement,
         public appState: IAppState & IObservableObject,
         public situationState: ISituationState & IObservableObject,
-        public wallRenderer: WallRenderer
+        public wallRenderer: WallRenderer,
     ) {}
 
     run() {
@@ -81,7 +81,9 @@ export default class World {
             this.scene,
         );
         this.wallMaterial.emissiveTexture = this.wallTexture;
-        this.wallMaterial.diffuseColor = BABYLON.Color3.FromHexString('#000000');
+        this.wallMaterial.diffuseColor = BABYLON.Color3.FromHexString(
+            '#000000',
+        );
         this.wallMaterial.backFaceCulling = false;
         this.renderWallMesh();
 

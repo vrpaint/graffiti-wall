@@ -103,7 +103,7 @@ export function controllerLoad(
 
     let currentDrawing: null | IDrawing = null;
 
-    let position1: null|TC.Vector2;
+    let position1: null | TC.Vector2;
     world.scene.registerAfterRender(() => {
         if (controllerPressed) {
             //todo do not find every animation frame
@@ -130,25 +130,28 @@ export function controllerLoad(
             ) {
                 //todo save drawings currentDrawing.frames.push(controllerState.currentFrame);
 
-                
-                if(controllerState.currentFrame.positionOnWall){
-
-
-                    const position2 = new TC.Vector2(//todo better directly deserialize
-                        controllerState.currentFrame.positionOnSquare.x*window.innerWidth,//todo better sizes
-                        controllerState.currentFrame.positionOnSquare.y*window.innerHeight
+                if (controllerState.currentFrame.positionOnWall) {
+                    const position2 = new TC.Vector2( //todo better directly deserialize
+                        controllerState.currentFrame.positionOnSquare.x *
+                            window.innerWidth, //todo better sizes
+                        controllerState.currentFrame.positionOnSquare.y *
+                            window.innerHeight,
                     );
-                    if(!position1)position1=position2;
+                    if (!position1) position1 = position2;
 
-                    const segments = Math.ceil(position1.length(position2)/(controllerState.drawingTool.size*1));
-                    
-                    const positionAdd = position2.subtract(position1).scaleInPlace(1/segments);
+                    const segments = Math.ceil(
+                        position1.length(position2) /
+                            (controllerState.drawingTool.size * 1),
+                    );
+
+                    const positionAdd = position2
+                        .subtract(position1)
+                        .scaleInPlace(1 / segments);
                     const positionCurrent = position1.clone();
 
                     //console.log(segments,positionAdd);
 
-                    for(let i =0;i<segments;i++){
-
+                    for (let i = 0; i < segments; i++) {
                         const particleOptions = {
                             shapeSrc: './assets/particles/blob.png',
                             shapeCenter: new TC.Vector2(0.5, 0.5),
@@ -156,32 +159,34 @@ export function controllerLoad(
                             current: {
                                 position: positionCurrent.clone(),
                                 rotation: 0,
-                                widthSize: controllerState.drawingTool.size*1.6,
-                            }, 
+                                widthSize:
+                                    controllerState.drawingTool.size * 1.6,
+                            },
                             movement: {
                                 position: new TC.Vector2(
                                     (Math.random() - 0.5) * 0, //todo depend this value
                                     (Math.random() - 0.5) * 0,
                                 ),
-                                rotation: ((Math.random() - 0.5) * Math.PI * 2 / 3),
+                                rotation:
+                                    ((Math.random() - 0.5) * Math.PI * 2) / 3,
                                 widthSize: 11,
                             },
-                            friction:  0.07
+                            friction: 0.07,
                         };
                         //console.log(particleOptions);
                         world.wallRenderer.addPoint(particleOptions);
                         positionCurrent.addInPlace(positionAdd);
                     }
 
-                    position1=position2;
+                    position1 = position2;
                 }
             } else {
                 console.warn(`You do not have ray on drawing wall!`); //todo is it optimal?
-                position1=null;
+                position1 = null;
             }
         } else {
             currentDrawing = null;
-            position1=null;
+            position1 = null;
         }
     });
 
@@ -240,34 +245,53 @@ export function controllerLoad(
     );
 
     controlWheel.values.subscribe((value) => {
-
         controllerWheelVibrations.start();
-        switch(controllerState.wheelChanging){
+        switch (controllerState.wheelChanging) {
             case 'SIZE':
-                controllerState.drawingTool.size = Math.max(1,Math.min(controllerState.drawingTool.size+value,100));//todo range
-                console.log( controllerState.drawingTool.size );
+                controllerState.drawingTool.size = Math.max(
+                    1,
+                    Math.min(controllerState.drawingTool.size + value, 100),
+                ); //todo range
+                console.log(controllerState.drawingTool.size);
                 break;
             case 'COLOR_HUE':
                 let hue = Color(controllerState.drawingTool.color).hue();
-                hue+=value;
-                controllerState.drawingTool.color = Color(controllerState.drawingTool.color).hue(hue).hex().toString();
+                hue += value;
+                controllerState.drawingTool.color = Color(
+                    controllerState.drawingTool.color,
+                )
+                    .hue(hue)
+                    .hex()
+                    .toString();
                 console.log(controllerState.drawingTool.color);
                 break;
             case 'COLOR_SATURATION':
-                let saturaion = Color(controllerState.drawingTool.color).saturationl();
-                saturaion+=value;
-                controllerState.drawingTool.color = Color(controllerState.drawingTool.color).saturationl(saturaion).hex().toString();
+                let saturaion = Color(
+                    controllerState.drawingTool.color,
+                ).saturationl();
+                saturaion += value;
+                controllerState.drawingTool.color = Color(
+                    controllerState.drawingTool.color,
+                )
+                    .saturationl(saturaion)
+                    .hex()
+                    .toString();
                 console.log(controllerState.drawingTool.color);
                 break;
             case 'COLOR_LIGHT':
-                let lightness = Color(controllerState.drawingTool.color).lightness();
-                lightness+=value;
-                controllerState.drawingTool.color = Color(controllerState.drawingTool.color).lightness(lightness).hex().toString();
+                let lightness = Color(
+                    controllerState.drawingTool.color,
+                ).lightness();
+                lightness += value;
+                controllerState.drawingTool.color = Color(
+                    controllerState.drawingTool.color,
+                )
+                    .lightness(lightness)
+                    .hex()
+                    .toString();
                 console.log(controllerState.drawingTool.color);
                 break;
         }
-        
-
     });
 
     controller.onPadValuesChangedObservable.add((gamepadButton) => {
@@ -275,12 +299,13 @@ export function controllerLoad(
     });
 
     controller.onPadStateChangedObservable.add((gamepadButton) => {
-        console.log('onPadStateChangedObservable',gamepadButton);
-        if(gamepadButton.pressed){
-            const i = WHEEL_CHANGING_OPTIONS.indexOf(controllerState.wheelChanging)
-            controllerState.wheelChanging = WHEEL_CHANGING_OPTIONS[(i+1)%4];
+        console.log('onPadStateChangedObservable', gamepadButton);
+        if (gamepadButton.pressed) {
+            const i = WHEEL_CHANGING_OPTIONS.indexOf(
+                controllerState.wheelChanging,
+            );
+            controllerState.wheelChanging = WHEEL_CHANGING_OPTIONS[(i + 1) % 4];
             console.log(controllerState.wheelChanging);
-            
         }
     });
 
